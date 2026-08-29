@@ -103,11 +103,11 @@
 
       <!-- Social Logins -->
       <div class="space-y-2 mb-6">
-        <button onclick="alert('Google OAuth wird vorbereitet')" class="w-full bg-slate-800 hover:bg-slate-700/80 text-slate-200 text-xs font-semibold py-2.5 px-4 rounded-xl border border-slate-700 flex items-center justify-center space-x-2 transition-colors">
+        <button onclick="window.location.href='https://scripthub-api.onrender.com/api/auth/google'" class="w-full bg-slate-800 hover:bg-slate-700/80 text-slate-200 text-xs font-semibold py-2.5 px-4 rounded-xl border border-slate-700 flex items-center justify-center space-x-2 transition-colors">
           <i class="fa-brands fa-google text-red-400"></i>
           <span>Mit Google anmelden</span>
         </button>
-        <button onclick="alert('GitHub OAuth wird vorbereitet')" class="w-full bg-slate-800 hover:bg-slate-700/80 text-slate-200 text-xs font-semibold py-2.5 px-4 rounded-xl border border-slate-700 flex items-center justify-center space-x-2 transition-colors">
+        <button onclick="window.location.href='https://scripthub-api.onrender.com/api/auth/github'" class="w-full bg-slate-800 hover:bg-slate-700/80 text-slate-200 text-xs font-semibold py-2.5 px-4 rounded-xl border border-slate-700 flex items-center justify-center space-x-2 transition-colors">
           <i class="fa-brands fa-github text-slate-300"></i>
           <span>Mit GitHub anmelden</span>
         </button>
@@ -155,11 +155,10 @@
     </div>
   </div>
 
-  <!-- Angepasster Footer -->
+  <!-- Footer -->
   <footer class="border-t border-slate-800 bg-slate-950/60 py-10 mt-auto">
     <div class="max-w-6xl mx-auto px-4">
       
-      <!-- Why ScriptHub? Section -->
       <div class="mb-8 text-center max-w-3xl mx-auto">
         <h3 class="text-xs uppercase font-extrabold tracking-widest text-brand mb-2">Why ScriptHub?</h3>
         <p class="text-slate-400 text-xs leading-relaxed">
@@ -208,13 +207,25 @@
 
   <!-- Frontend Logic -->
   <script>
-    const API_URL = "https://DEINE-RENDER-URL.onrender.com"; // <-- DEINE RENDER URL EINTRAGEN
+    const API_URL = "https://scripthub-api.onrender.com";
     let currentUser = null;
     let allScripts = [];
     let selectedCategory = 'all';
 
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); document.getElementById(id).classList.add('flex'); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('flex'); }
+
+    // Pruefen ob der User von einem OAuth Redirect (Google/GitHub) kommt
+    function checkOAuthRedirect() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const oauthUser = urlParams.get('user');
+
+      if (oauthUser) {
+        currentUser = oauthUser;
+        updateNavForUser();
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    }
 
     async function register() {
       const u = document.getElementById('username').value;
@@ -343,6 +354,8 @@
     function escapeHtml(t) { return t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
     function escapeJs(t) { return t.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$'); }
 
+    // Init
+    checkOAuthRedirect();
     loadScripts();
   </script>
 </body>
