@@ -2,131 +2,190 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
-  <title>ScriptHub</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScriptHub | Luau Scripts</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #121212; color: #fff; padding: 20px; max-width: 800px; margin: 0 auto; }
-    input, textarea, button { display: block; margin: 10px 0; padding: 10px; width: 100%; box-sizing: border-box; background: #222; border: 1px solid #444; color: #fff; border-radius: 4px; }
-    button { background: #0070f3; cursor: pointer; border: none; font-weight: bold; }
-    button:hover { background: #0051a8; }
-    .card { background: #1e1e1e; padding: 15px; margin-bottom: 15px; border-radius: 6px; border: 1px solid #333; }
-    pre { background: #000; padding: 12px; overflow-x: auto; color: #00ff66; border-radius: 4px; }
-    .copy-btn { background: #333; width: auto; display: inline-block; padding: 5px 10px; font-size: 12px; }
+    :root {
+      --bg-color: #0d0d0d;
+      --card-bg: #161618;
+      --border-color: #26262a;
+      --accent-orange: #ff6b00;
+      --accent-orange-hover: #e05e00;
+      --text-main: #f0f0f0;
+      --text-muted: #88888e;
+      --code-bg: #09090b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: var(--bg-color); color: var(--text-main); padding: 40px 20px; display: flex; justify-content: center; }
+    .container { width: 100%; max-width: 900px; }
+
+    /* Header */
+    header { text-align: center; margin-bottom: 40px; }
+    header h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1px; }
+    header h1 span { color: var(--accent-orange); }
+    header p { color: var(--text-muted); margin-top: 8px; }
+
+    /* Forms & Cards */
+    .card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 24px; margin-bottom: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.4); }
+    .card-title { font-size: 1.25rem; font-weight: 600; margin-bottom: 16px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+
+    input, textarea { width: 100%; background: #0e0e10; border: 1px solid var(--border-color); color: var(--text-main); padding: 12px; border-radius: 8px; margin-bottom: 12px; font-size: 0.95rem; transition: border 0.2s; }
+    input:focus, textarea:focus { outline: none; border-color: var(--accent-orange); }
+
+    button { background: var(--accent-orange); color: #fff; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 600; cursor: pointer; transition: background 0.2s, transform 0.1s; width: 100%; }
+    button:hover { background: var(--accent-orange-hover); }
+    button:active { transform: scale(0.98); }
+
+    .btn-secondary { background: transparent; border: 1px solid var(--border-color); color: var(--text-muted); }
+    .btn-secondary:hover { background: var(--border-color); color: var(--text-main); }
+
+    /* Code Display */
+    pre { background: var(--code-bg); border: 1px solid var(--border-color); padding: 16px; border-radius: 8px; overflow-x: auto; font-family: 'Consolas', 'Courier New', monospace; color: #ff9d5c; font-size: 0.9rem; margin-top: 12px; }
+
+    /* Helper Layouts */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .copy-btn { width: auto; font-size: 0.85rem; padding: 6px 14px; margin-top: 12px; }
+    .author-tag { font-size: 0.8rem; color: var(--accent-orange); background: rgba(255, 107, 0, 0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255, 107, 0, 0.2); }
   </style>
 </head>
 <body>
-  <h1>ScriptHub 🚀</h1>
 
-  <!-- Auth Bereich -->
+<div class="container">
+  <header>
+    <h1>Script<span>Hub</span></h1>
+    <p>Die beste Plattform für deine Luau Skripte</p>
+  </header>
+
+  <!-- Auth Card -->
   <div id="auth-section" class="card">
-    <h3>Anmelden oder Registrieren</h3>
+    <div class="card-title">Willkommen zurück</div>
     <input type="text" id="username" placeholder="Benutzername">
     <input type="password" id="password" placeholder="Passwort">
-    <button onclick="register()">Registrieren</button>
-    <button onclick="login()">Einloggen</button>
+    <div class="grid-2">
+      <button onclick="login()">Einloggen</button>
+      <button class="btn-secondary" onclick="register()">Registrieren</button>
+    </div>
   </div>
 
-  <!-- Upload Bereich -->
+  <!-- Upload Card -->
   <div id="upload-section" class="card" style="display:none;">
-    <h3>Neues Luau-Skript hochladen</h3>
-    <input type="text" id="title" placeholder="Skript-Titel (z. B. Fly Script)">
-    <textarea id="code" rows="5" placeholder="print('Hello World')"></textarea>
-    <button onclick="uploadScript()">Skript veröffentlichen</button>
+    <div class="card-title">Neues Skript hochladen</div>
+    <input type="text" id="title" placeholder="Skript-Titel (z. B. Fly Script v2)">
+    <textarea id="code" rows="6" placeholder="-- Trage hier deinen Luau Code ein"></textarea>
+    <button onclick="uploadScript()">Veröffentlichen</button>
   </div>
 
-  <hr style="border-color: #333; margin: 20px 0;">
-  
-  <h2>Verfügbare Skripte</h2>
+  <!-- Search & Feed -->
+  <div style="margin-bottom: 20px;">
+    <input type="text" id="search" placeholder="🔍 Skripte durchsuchen..." onkeyup="filterScripts()">
+  </div>
+
   <div id="scripts">Lade Skripte...</div>
+</div>
 
-  <script>
-    // DEINE RENDER-URL HIER EINTRAGEN:
-    const API_URL = "https://scripthub-api.onrender.com"; 
-    let currentUser = null;
+<script>
+  const API_URL = "https://DEINE-RENDER-URL.onrender.com"; // <-- Hier deine Render-URL einfügen!
+  let currentUser = null;
+  let allScripts = [];
 
-    async function register() {
-      const u = document.getElementById('username').value;
-      const p = document.getElementById('password').value;
-      const res = await fetch(`${API_URL}/api/register`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: u, password: p })
-      });
-      const data = await res.json();
-      alert(data.message || data.error);
+  async function register() {
+    const u = document.getElementById('username').value;
+    const p = document.getElementById('password').value;
+    const res = await fetch(`${API_URL}/api/register`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u, password: p })
+    });
+    const data = await res.json();
+    alert(data.message || data.error);
+  }
+
+  async function login() {
+    const u = document.getElementById('username').value;
+    const p = document.getElementById('password').value;
+    const res = await fetch(`${API_URL}/api/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: u, password: p })
+    });
+    const data = await res.json();
+    if (data.token) {
+      currentUser = data.username;
+      document.getElementById('auth-section').style.display = 'none';
+      document.getElementById('upload-section').style.display = 'block';
+    } else {
+      alert(data.error);
     }
+  }
 
-    async function login() {
-      const u = document.getElementById('username').value;
-      const p = document.getElementById('password').value;
-      const res = await fetch(`${API_URL}/api/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: u, password: p })
-      });
-      const data = await res.json();
-      if (data.token) {
-        currentUser = data.username;
-        document.getElementById('auth-section').style.display = 'none';
-        document.getElementById('upload-section').style.display = 'block';
-        alert("Eingeloggt als " + currentUser);
-      } else {
-        alert(data.error);
-      }
-    }
-
-    async function uploadScript() {
-      const title = document.getElementById('title').value;
-      const code = document.getElementById('code').value;
-      const res = await fetch(`${API_URL}/api/scripts`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, code, author: currentUser })
-      });
-      const data = await res.json();
-      alert(data.message || data.error);
-      document.getElementById('title').value = '';
-      document.getElementById('code').value = '';
-      loadScripts();
-    }
-
-    async function loadScripts() {
-      try {
-        const res = await fetch(`${API_URL}/api/scripts`);
-        const scripts = await res.json();
-        const container = document.getElementById('scripts');
-        container.innerHTML = '';
-        
-        if(scripts.length === 0) {
-          container.innerHTML = '<p>Noch keine Skripte vorhanden.</p>';
-          return;
-        }
-
-        scripts.forEach(s => {
-          container.innerHTML += `
-            <div class="card">
-              <h3>${s.title} <small style="font-size: 12px; color: #888;">von ${s.author}</small></h3>
-              <pre><code id="code-${s.id}">${escapeHtml(s.code)}</code></pre>
-              <button class="copy-btn" onclick="copyCode('code-${s.id}')">Code kopieren</button>
-            </div>
-          `;
-        });
-      } catch(e) {
-        document.getElementById('scripts').innerText = "Fehler beim Laden der Skripte.";
-      }
-    }
-
-    function copyCode(elementId) {
-      const codeText = document.getElementById(elementId).innerText;
-      navigator.clipboard.writeText(codeText);
-      alert("Skript in Zwischenablage kopiert!");
-    }
-
-    function escapeHtml(text) {
-      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    }
-
-    // Beim Laden der Seite Skripte abrufen
+  async function uploadScript() {
+    const title = document.getElementById('title').value;
+    const code = document.getElementById('code').value;
+    await fetch(`${API_URL}/api/scripts`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ title, code, author: currentUser })
+    });
+    document.getElementById('title').value = '';
+    document.getElementById('code').value = '';
     loadScripts();
-  </script>
+  }
+
+  async function loadScripts() {
+    try {
+      const res = await fetch(`${API_URL}/api/scripts`);
+      allScripts = await res.json();
+      renderScripts(allScripts);
+    } catch(e) {
+      document.getElementById('scripts').innerText = "Fehler beim Laden der Skripte.";
+    }
+  }
+
+  function renderScripts(scripts) {
+    const container = document.getElementById('scripts');
+    container.innerHTML = '';
+    
+    if(scripts.length === 0) {
+      container.innerHTML = '<p style="color: var(--text-muted); text-align: center;">Keine Skripte gefunden.</p>';
+      return;
+    }
+
+    scripts.forEach(s => {
+      container.innerHTML += `
+        <div class="card">
+          <div class="card-title">
+            ${escapeHtml(s.title)} 
+            <span class="author-tag">@${escapeHtml(s.author)}</span>
+          </div>
+          <pre><code id="code-${s.id}">${escapeHtml(s.code)}</code></pre>
+          <button class="copy-btn" onclick="copyCode('code-${s.id}', this)">Code kopieren</button>
+        </div>
+      `;
+    });
+  }
+
+  function filterScripts() {
+    const query = document.getElementById('search').value.toLowerCase();
+    const filtered = allScripts.filter(s => 
+      s.title.toLowerCase().includes(query) || s.code.toLowerCase().includes(query)
+    );
+    renderScripts(filtered);
+  }
+
+  function copyCode(id, btn) {
+    const text = document.getElementById(id).innerText;
+    navigator.clipboard.writeText(text);
+    btn.innerText = "Kopiert!";
+    setTimeout(() => btn.innerText = "Code kopieren", 2000);
+  }
+
+  function escapeHtml(text) {
+    return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  loadScripts();
+</script>
+
 </body>
 </html>
