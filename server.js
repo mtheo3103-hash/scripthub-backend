@@ -80,7 +80,7 @@ app.get('/api/auth/google', passport.authenticate('google', { scope: ['profile',
 app.get('/api/auth/google/callback', 
   passport.authenticate('google', { failureRedirect: '/' }),
   (req, res) => {
-    res.redirect(`https://mtheo3103-hash.github.io/scripthub-frontend/?user=${req.user.username}`);
+    res.redirect(`https://mtheo3103-hash.github.io/scripthub-backend/?user=${req.user.username}`);
   }
 );
 
@@ -89,7 +89,7 @@ app.get('/api/auth/github', passport.authenticate('github', { scope: ['user:emai
 app.get('/api/auth/github/callback', 
   passport.authenticate('github', { failureRedirect: '/' }),
   (req, res) => {
-    res.redirect(`https://mtheo3103-hash.github.io/scripthub-frontend/?user=${req.user.username}`);
+    res.redirect(`https://mtheo3103-hash.github.io/scripthub-backend/?user=${req.user.username}`);
   }
 );
 
