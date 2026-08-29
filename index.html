@@ -4,9 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ScriptHub | The Best Roblox Scripts</title>
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
   <script>
     tailwind.config = {
@@ -14,11 +12,7 @@
       theme: {
         extend: {
           colors: {
-            brand: {
-              DEFAULT: '#ff6b00',
-              hover: '#e05e00',
-              light: '#ff8533'
-            }
+            brand: { DEFAULT: '#ff6b00', hover: '#e05e00', light: '#ff8533' }
           }
         }
       }
@@ -27,16 +21,14 @@
 </head>
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased">
 
-  <!-- Navigation Bar -->
+  <!-- Header -->
   <header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md sticky top-0 z-40">
     <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
-      <!-- Logo -->
-      <a href="#" class="flex items-center space-x-2 text-xl font-black tracking-tight">
+      <a href="#" onclick="window.location.reload()" class="flex items-center space-x-2 text-xl font-black tracking-tight">
         <i class="fa-solid fa-code text-brand"></i>
         <span>Script<span class="text-brand">Hub</span></span>
       </a>
 
-      <!-- Right Nav Buttons -->
       <div id="nav-actions" class="flex items-center space-x-3">
         <button onclick="openModal('auth-modal')" class="bg-brand hover:bg-brand-hover text-white text-xs font-bold px-4 py-2 rounded-lg transition-colors flex items-center space-x-2">
           <i class="fa-solid fa-right-to-bracket"></i>
@@ -47,38 +39,39 @@
   </header>
 
   <!-- Hero Section -->
-  <section class="py-16 px-4 text-center relative overflow-hidden bg-gradient-to-b from-brand/10 to-transparent border-b border-slate-800/50">
+  <section class="py-12 px-4 text-center relative overflow-hidden bg-gradient-to-b from-brand/10 to-transparent border-b border-slate-800/50">
     <div class="max-w-4xl mx-auto">
       <span class="text-xs uppercase font-extrabold tracking-widest text-brand mb-3 block">#1 Luau Repository</span>
-      <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-white mb-4">
-        The Best Roblox Scripts
-      </h1>
-      <p class="text-slate-400 text-sm sm:text-base max-w-2xl mx-auto mb-8">
-        Lade die neuesten, sichersten und leistungsstärksten Luau-Skripte für Roblox herunter oder teile deine eigenen mit der Community.
+      <h1 class="text-4xl sm:text-5xl font-black tracking-tight text-white mb-3">The Best Roblox Scripts</h1>
+      <p class="text-slate-400 text-xs sm:text-sm max-w-2xl mx-auto mb-6">
+        Finde und teile verifizierte Luau-Skripte für Roblox-Spiele.
       </p>
 
-      <!-- Search & Categories Bar -->
-      <div class="max-w-2xl mx-auto space-y-4">
-        <!-- Search Input -->
+      <!-- Search & Extended Categories -->
+      <div class="max-w-3xl mx-auto space-y-4">
         <div class="relative">
           <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
-          <input type="text" id="search-input" onkeyup="filterScripts()" placeholder="Suche nach Skripten, Games oder Autoren..." class="w-full bg-slate-900 border border-slate-800 rounded-xl pl-11 pr-4 py-3.5 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand transition-colors">
+          <input type="text" id="search-input" onkeyup="filterScripts()" placeholder="Suche nach Skripten, Games oder Autoren..." class="w-full bg-slate-900 border border-slate-800 rounded-xl pl-11 pr-4 py-3 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand transition-colors">
         </div>
 
-        <!-- Category Pills -->
-        <div class="flex flex-wrap items-center justify-center gap-2 text-xs">
-          <button onclick="setCategory('all')" class="cat-btn active bg-brand text-white px-3 py-1.5 rounded-lg border border-brand transition-colors font-medium">Alle</button>
-          <button onclick="setCategory('Admin')" class="cat-btn bg-slate-900 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-800 transition-colors">Admin Commands</button>
-          <button onclick="setCategory('Autofarm')" class="cat-btn bg-slate-900 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-800 transition-colors">Autofarm</button>
-          <button onclick="setCategory('GUI')" class="cat-btn bg-slate-900 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-800 transition-colors">Hub / GUI</button>
-          <button onclick="setCategory('PvP')" class="cat-btn bg-slate-900 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-800 transition-colors">PvP / Aimbot</button>
+        <!-- Extended Category Pills -->
+        <div class="flex flex-wrap items-center justify-center gap-1.5 text-xs">
+          <button onclick="setCategory(this, 'all')" class="cat-btn bg-brand text-white px-3 py-1.5 rounded-lg border border-brand transition-colors font-medium">Alle</button>
+          <button onclick="setCategory(this, 'Admin')" class="cat-btn bg-slate-900 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-800 transition-colors">Admin Commands</button>
+          <button onclick="setCategory(this, 'Autofarm')" class="cat-btn bg-slate-900 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-800 transition-colors">Autofarm</button>
+          <button onclick="setCategory(this, 'GUI')" class="cat-btn bg-slate-900 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-800 transition-colors">GUI / Hub</button>
+          <button onclick="setCategory(this, 'PvP')" class="cat-btn bg-slate-900 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-800 transition-colors">PvP / Aimbot</button>
+          <button onclick="setCategory(this, 'Visuals')" class="cat-btn bg-slate-900 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-800 transition-colors">Visuals / ESP</button>
+          <button onclick="setCategory(this, 'Utility')" class="cat-btn bg-slate-900 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-800 transition-colors">Utility</button>
+          <button onclick="setCategory(this, 'Tycoon')" class="cat-btn bg-slate-900 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-800 transition-colors">Tycoon / Simulator</button>
+          <button onclick="setCategory(this, 'Fun')" class="cat-btn bg-slate-900 hover:bg-slate-800 text-slate-300 px-3 py-1.5 rounded-lg border border-slate-800 transition-colors">Fun / Troll</button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Main Content Feed -->
-  <main class="max-w-6xl mx-auto px-4 py-12 flex-1 w-full">
+  <!-- Main Feed -->
+  <main class="max-w-6xl mx-auto px-4 py-10 flex-1 w-full">
     <div class="flex items-center justify-between mb-6">
       <h2 class="text-lg font-bold text-slate-200 flex items-center space-x-2">
         <i class="fa-solid fa-fire text-brand"></i>
@@ -87,21 +80,16 @@
       <span id="script-count" class="text-xs text-slate-500">Lade...</span>
     </div>
 
-    <!-- Scripts Container -->
-    <div id="scripts-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <!-- Dynamisch befüllt -->
-    </div>
+    <div id="scripts-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
   </main>
 
   <!-- Login/Register Modal -->
   <div id="auth-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 w-full max-w-md relative shadow-2xl">
       <button onclick="closeModal('auth-modal')" class="absolute right-4 top-4 text-slate-500 hover:text-slate-300"><i class="fa-solid fa-xmark text-lg"></i></button>
-      
       <h3 class="text-xl font-bold mb-1">Willkommen bei ScriptHub</h3>
       <p class="text-slate-400 text-xs mb-6">Melde dich an, um eigene Skripte hochzuladen.</p>
 
-      <!-- Social Logins -->
       <div class="space-y-2 mb-6">
         <button onclick="window.location.href='https://scripthub-api.onrender.com/api/auth/google'" class="w-full bg-slate-800 hover:bg-slate-700/80 text-slate-200 text-xs font-semibold py-2.5 px-4 rounded-xl border border-slate-700 flex items-center justify-center space-x-2 transition-colors">
           <i class="fa-brands fa-google text-red-400"></i>
@@ -119,11 +107,9 @@
         <div class="flex-grow border-t border-slate-800"></div>
       </div>
 
-      <!-- Native Auth Form -->
       <div class="space-y-3">
         <input type="text" id="username" placeholder="Benutzername" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-brand">
         <input type="password" id="password" placeholder="Passwort" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-brand">
-        
         <div class="grid grid-cols-2 gap-2 pt-2">
           <button onclick="login()" class="bg-brand hover:bg-brand-hover text-white text-xs font-bold py-2.5 rounded-xl transition-colors">Einloggen</button>
           <button onclick="register()" class="bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold py-2.5 rounded-xl transition-colors">Registrieren</button>
@@ -136,21 +122,48 @@
   <div id="upload-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
     <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 w-full max-w-lg relative shadow-2xl">
       <button onclick="closeModal('upload-modal')" class="absolute right-4 top-4 text-slate-500 hover:text-slate-300"><i class="fa-solid fa-xmark text-lg"></i></button>
-      
       <h3 class="text-xl font-bold mb-4">Neues Luau Skript hochladen</h3>
       <div class="space-y-3">
         <input type="text" id="script-title" placeholder="Skript-Titel (z. B. Blox Fruits Auto-Farm)" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-200 focus:outline-none focus:border-brand">
         
-        <select id="script-category" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-400 focus:outline-none focus:border-brand">
-          <option value="GUI">Hub / GUI</option>
+        <select id="script-category" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs text-slate-300 focus:outline-none focus:border-brand">
+          <option value="GUI">GUI / Hub</option>
           <option value="Autofarm">Autofarm</option>
           <option value="Admin">Admin Commands</option>
           <option value="PvP">PvP / Aimbot</option>
+          <option value="Visuals">Visuals / ESP</option>
+          <option value="Utility">Utility</option>
+          <option value="Tycoon">Tycoon / Simulator</option>
+          <option value="Fun">Fun / Troll</option>
         </select>
 
         <textarea id="script-code" rows="8" placeholder="-- Luau Code hier einfügen" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3.5 text-xs font-mono text-emerald-400 focus:outline-none focus:border-brand"></textarea>
-        
         <button onclick="uploadScript()" class="w-full bg-brand hover:bg-brand-hover text-white text-xs font-bold py-3 rounded-xl transition-colors">Veröffentlichen</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- User Profile Modal -->
+  <div id="profile-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4">
+    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 w-full max-w-2xl relative shadow-2xl max-h-[85vh] flex flex-col">
+      <button onclick="closeModal('profile-modal')" class="absolute right-4 top-4 text-slate-500 hover:text-slate-300"><i class="fa-solid fa-xmark text-lg"></i></button>
+      
+      <!-- Profile Header -->
+      <div class="flex items-center space-x-4 border-b border-slate-800 pb-4 mb-4">
+        <div class="w-14 h-14 bg-brand/20 border border-brand/30 rounded-2xl flex items-center justify-center text-brand text-2xl font-bold" id="profile-avatar">
+          ?
+        </div>
+        <div>
+          <h3 class="text-xl font-bold text-white flex items-center space-x-2">
+            <span id="profile-username">User</span>
+          </h3>
+          <p class="text-slate-400 text-xs" id="profile-stats">0 Skripte veröffentlicht</p>
+        </div>
+      </div>
+
+      <!-- User Scripts List -->
+      <div class="flex-1 overflow-y-auto space-y-3 pr-1" id="profile-scripts-container">
+        <!-- Dynamisch befüllt -->
       </div>
     </div>
   </div>
@@ -158,7 +171,6 @@
   <!-- Footer -->
   <footer class="border-t border-slate-800 bg-slate-950/60 py-10 mt-auto">
     <div class="max-w-6xl mx-auto px-4">
-      
       <div class="mb-8 text-center max-w-3xl mx-auto">
         <h3 class="text-xs uppercase font-extrabold tracking-widest text-brand mb-2">Why ScriptHub?</h3>
         <p class="text-slate-400 text-xs leading-relaxed">
@@ -166,35 +178,25 @@
         </p>
       </div>
 
-      <!-- Feature Grid -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 max-w-5xl mx-auto text-xs text-slate-400 mb-8">
         <div class="bg-slate-900/50 p-3.5 rounded-xl border border-slate-800">
-          <div class="text-brand font-semibold mb-1 flex items-center">
-            <i class="fa-solid fa-shield-halved text-xs mr-2"></i> Clean Code Standards
-          </div>
-          <span>All uploaded scripts are publicly readable. No obfuscated installers or executable downloads required.</span>
+          <div class="text-brand font-semibold mb-1 flex items-center"><i class="fa-solid fa-shield-halved text-xs mr-2"></i> Clean Code Standards</div>
+          <span>All uploaded scripts are publicly readable. No obfuscated installers required.</span>
         </div>
         <div class="bg-slate-900/50 p-3.5 rounded-xl border border-slate-800">
-          <div class="text-brand font-semibold mb-1 flex items-center">
-            <i class="fa-solid fa-bolt text-xs mr-2"></i> Instant Copying
-          </div>
-          <span>One-click loadstring copying formatted for direct execution in Synapse, Wave, Solara or Hydrogen.</span>
+          <div class="text-brand font-semibold mb-1 flex items-center"><i class="fa-solid fa-bolt text-xs mr-2"></i> Instant Copying</div>
+          <span>One-click loadstring copying formatted for direct execution in your preferred executor.</span>
         </div>
         <div class="bg-slate-900/50 p-3.5 rounded-xl border border-slate-800">
-          <div class="text-brand font-semibold mb-1 flex items-center">
-            <i class="fa-solid fa-list-check text-xs mr-2"></i> Categorized Feeds
-          </div>
-          <span>Easily filter scripts by category like Admin Commands, Autofarms, GUI Hubs, and PvP mechanics.</span>
+          <div class="text-brand font-semibold mb-1 flex items-center"><i class="fa-solid fa-list-check text-xs mr-2"></i> Categorized Feeds</div>
+          <span>Easily filter scripts by categories like Admin Commands, Autofarms, GUI Hubs, and PvP mechanics.</span>
         </div>
         <div class="bg-slate-900/50 p-3.5 rounded-xl border border-slate-800">
-          <div class="text-brand font-semibold mb-1 flex items-center">
-            <i class="fa-solid fa-users text-xs mr-2"></i> Community Driven
-          </div>
-          <span>Share your own creations, build your author profile, and manage your uploaded Luau snippets effortlessly.</span>
+          <div class="text-brand font-semibold mb-1 flex items-center"><i class="fa-solid fa-users text-xs mr-2"></i> User Profiles</div>
+          <span>Explore user profiles, view all creations by specific authors, and build your own reputation.</span>
         </div>
       </div>
 
-      <!-- Copyright Line -->
       <div class="text-center text-[11px] text-slate-600 border-t border-slate-900 pt-6 flex items-center justify-center space-x-1">
         <span>ScriptHub &copy; Open-Source Luau Repository. Created by</span>
         <a href="https://github.com/mtheo3103-hash" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-brand transition-colors inline-flex items-center ml-1 space-x-1">
@@ -205,7 +207,7 @@
     </div>
   </footer>
 
-  <!-- Frontend Logic -->
+  <!-- JS Logic -->
   <script>
     const API_URL = "https://scripthub-api.onrender.com";
     let currentUser = null;
@@ -215,11 +217,9 @@
     function openModal(id) { document.getElementById(id).classList.remove('hidden'); document.getElementById(id).classList.add('flex'); }
     function closeModal(id) { document.getElementById(id).classList.add('hidden'); document.getElementById(id).classList.remove('flex'); }
 
-    // Pruefen ob der User von einem OAuth Redirect (Google/GitHub) kommt
     function checkOAuthRedirect() {
       const urlParams = new URLSearchParams(window.location.search);
       const oauthUser = urlParams.get('user');
-
       if (oauthUser) {
         currentUser = oauthUser;
         updateNavForUser();
@@ -257,13 +257,24 @@
       }
     }
 
+    function logout() {
+      currentUser = null;
+      window.location.reload();
+    }
+
     function updateNavForUser() {
       const nav = document.getElementById('nav-actions');
       nav.innerHTML = `
-        <span class="text-xs text-slate-400">Angemeldet als <strong class="text-brand">@${currentUser}</strong></span>
-        <button onclick="openModal('upload-modal')" class="bg-brand hover:bg-brand-hover text-white text-xs font-bold px-3.5 py-2 rounded-lg transition-colors flex items-center space-x-1.5">
+        <button onclick="openUserProfile('${escapeHtml(currentUser)}')" class="text-xs text-slate-300 hover:text-brand transition-colors bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-lg flex items-center space-x-2">
+          <i class="fa-solid fa-user text-brand"></i>
+          <span>@${escapeHtml(currentUser)}</span>
+        </button>
+        <button onclick="openModal('upload-modal')" class="bg-brand hover:bg-brand-hover text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-colors flex items-center space-x-1.5">
           <i class="fa-solid fa-plus"></i>
-          <span>Skript Hochladen</span>
+          <span>Hochladen</span>
+        </button>
+        <button onclick="logout()" class="text-slate-500 hover:text-red-400 text-xs px-2 py-1.5 transition-colors" title="Abmelden">
+          <i class="fa-solid fa-right-from-bracket"></i>
         </button>
       `;
     }
@@ -273,13 +284,17 @@
       const category = document.getElementById('script-category').value;
       const code = document.getElementById('script-code').value;
 
+      if(!title || !code) return alert("Bitte Titel und Code ausfüllen!");
+
       await fetch(`${API_URL}/api/scripts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title: `[${category}] ${title}`, code, author: currentUser })
+        body: JSON.stringify({ title, code, author: currentUser, category })
       });
 
       closeModal('upload-modal');
+      document.getElementById('script-title').value = '';
+      document.getElementById('script-code').value = '';
       loadScripts();
     }
 
@@ -289,27 +304,32 @@
         allScripts = await res.json();
         filterScripts();
       } catch(e) {
-        document.getElementById('scripts-container').innerHTML = '<p class="text-slate-500 text-xs col-span-2">Fehler beim Laden der Skripte.</p>';
+        document.getElementById('scripts-container').innerHTML = '<p class="text-slate-500 text-xs col-span-2 text-center py-8">Fehler beim Laden der Skripte.</p>';
       }
     }
 
-    function setCategory(cat) {
+    function setCategory(btn, cat) {
       selectedCategory = cat;
-      document.querySelectorAll('.cat-btn').forEach(btn => {
-        btn.classList.remove('bg-brand', 'text-white', 'border-brand');
-        btn.classList.add('bg-slate-900', 'text-slate-300', 'border-slate-800');
+      document.querySelectorAll('.cat-btn').forEach(b => {
+        b.classList.remove('bg-brand', 'text-white', 'border-brand');
+        b.classList.add('bg-slate-900', 'text-slate-300', 'border-slate-800');
       });
-      event.target.classList.add('bg-brand', 'text-white', 'border-brand');
-      event.target.classList.remove('bg-slate-900', 'text-slate-300', 'border-slate-800');
+      btn.classList.add('bg-brand', 'text-white', 'border-brand');
+      btn.classList.remove('bg-slate-900', 'text-slate-300', 'border-slate-800');
       filterScripts();
     }
 
     function filterScripts() {
       const query = document.getElementById('search-input').value.toLowerCase();
       const filtered = allScripts.filter(s => {
-        const matchesQuery = s.title.toLowerCase().includes(query) || s.code.toLowerCase().includes(query);
-        const matchesCategory = selectedCategory === 'all' || s.title.includes(`[${selectedCategory}]`);
-        return matchesQuery && matchesCategory;
+        const titleMatch = (s.title || '').toLowerCase().includes(query);
+        const codeMatch = (s.code || '').toLowerCase().includes(query);
+        const authorMatch = (s.author || '').toLowerCase().includes(query);
+        
+        const cat = s.category || (s.title.match(/\[(.*?)\]/) ? s.title.match(/\[(.*?)\]/)[1] : 'GUI');
+        const matchesCategory = selectedCategory === 'all' || cat.toLowerCase().includes(selectedCategory.toLowerCase());
+
+        return (titleMatch || codeMatch || authorMatch) && matchesCategory;
       });
       renderScripts(filtered);
     }
@@ -325,14 +345,20 @@
       }
 
       scripts.forEach(s => {
+        const catName = s.category || 'GUI';
         container.innerHTML += `
           <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-5 shadow-lg flex flex-col justify-between">
             <div>
               <div class="flex items-start justify-between gap-2 mb-3">
-                <h3 class="font-bold text-slate-100 text-sm leading-snug">${escapeHtml(s.title)}</h3>
-                <span class="text-[10px] text-brand bg-brand/10 border border-brand/20 px-2 py-0.5 rounded-full font-semibold">@${escapeHtml(s.author)}</span>
+                <div>
+                  <span class="text-[10px] text-brand bg-brand/10 border border-brand/20 px-2 py-0.5 rounded-md font-semibold inline-block mb-1">${escapeHtml(catName)}</span>
+                  <h3 class="font-bold text-slate-100 text-sm leading-snug">${escapeHtml(s.title)}</h3>
+                </div>
+                <button onclick="openUserProfile('${escapeHtml(s.author)}')" class="text-[10px] text-slate-400 hover:text-brand bg-slate-800/80 px-2.5 py-1 rounded-lg border border-slate-700 transition-colors">
+                  @${escapeHtml(s.author)}
+                </button>
               </div>
-              <pre class="bg-slate-950 border border-slate-800/80 rounded-xl p-3 text-[11px] font-mono text-emerald-400 overflow-x-auto max-h-40 mb-4"><code>${escapeHtml(s.code)}</code></pre>
+              <pre class="bg-slate-950 border border-slate-800/80 rounded-xl p-3 text-[11px] font-mono text-emerald-400 overflow-x-auto max-h-36 mb-4"><code>${escapeHtml(s.code)}</code></pre>
             </div>
             <button onclick="copyCode(this, \`${escapeJs(s.code)}\`)" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold py-2 rounded-xl transition-colors flex items-center justify-center space-x-2">
               <i class="fa-regular fa-copy"></i>
@@ -343,18 +369,56 @@
       });
     }
 
-    function copyCode(btn, code) {
-      navigator.clipboard.writeText(code);
-      btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> <span class="text-emerald-400">Kopiert!</span>`;
-      setTimeout(() => {
-        btn.innerHTML = `<i class="fa-regular fa-copy"></i> <span>Code Kopieren</span>`;
-      }, 2000);
+    async function openUserProfile(username) {
+      document.getElementById('profile-username').innerText = `@${username}`;
+      document.getElementById('profile-avatar').innerText = username.charAt(0).toUpperCase();
+      
+      const container = document.getElementById('profile-scripts-container');
+      container.innerHTML = '<p class="text-slate-500 text-xs py-4">Lade Profil-Skripte...</p>';
+      
+      openModal('profile-modal');
+
+      try {
+        const res = await fetch(`${API_URL}/api/user/${encodeURIComponent(username)}/scripts`);
+        const userScripts = await res.json();
+
+        document.getElementById('profile-stats').innerText = `${userScripts.length} veröffentlichte(s) Skript(e)`;
+        container.innerHTML = '';
+
+        if(userScripts.length === 0) {
+          container.innerHTML = '<p class="text-slate-500 text-xs py-4 text-center">Dieser Nutzer hat noch keine Skripte hochgeladen.</p>';
+          return;
+        }
+
+        userScripts.forEach(s => {
+          container.innerHTML += `
+            <div class="bg-slate-950 border border-slate-800/80 rounded-xl p-3.5">
+              <div class="flex items-center justify-between mb-2">
+                <h4 class="font-bold text-xs text-slate-200">${escapeHtml(s.title)}</h4>
+                <span class="text-[9px] text-brand bg-brand/10 px-2 py-0.5 rounded font-semibold">${escapeHtml(s.category || 'GUI')}</span>
+              </div>
+              <pre class="bg-slate-900 border border-slate-800 rounded-lg p-2 text-[10px] font-mono text-emerald-400 overflow-x-auto max-h-24 mb-2"><code>${escapeHtml(s.code)}</code></pre>
+              <button onclick="copyCode(this, \`${escapeJs(s.code)}\`)" class="text-[11px] bg-slate-800 hover:bg-slate-700 text-slate-300 w-full py-1.5 rounded-lg transition-colors">
+                Code Kopieren
+              </button>
+            </div>
+          `;
+        });
+      } catch(e) {
+        container.innerHTML = '<p class="text-slate-500 text-xs py-4">Fehler beim Laden des Profils.</p>';
+      }
     }
 
-    function escapeHtml(t) { return t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
-    function escapeJs(t) { return t.replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$'); }
+    function copyCode(btn, code) {
+      navigator.clipboard.writeText(code);
+      const orig = btn.innerHTML;
+      btn.innerHTML = `<i class="fa-solid fa-check text-emerald-400"></i> <span class="text-emerald-400">Kopiert!</span>`;
+      setTimeout(() => { btn.innerHTML = orig; }, 2000);
+    }
 
-    // Init
+    function escapeHtml(t) { return (t || '').replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+    function escapeJs(t) { return (t || '').replace(/\\/g, '\\\\').replace(/`/g, '\\`').replace(/\$/g, '\\$'); }
+
     checkOAuthRedirect();
     loadScripts();
   </script>
