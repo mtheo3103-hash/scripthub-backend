@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>ScriptHub</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #121212; color: #fff; padding: 20px; max-width: 800px; margin: 0 auto; }
+    input, textarea, button { display: block; margin: 10px 0; padding: 10px; width: 100%; box-sizing: border-box; background: #222; border: 1px solid #444; color: #fff; border-radius: 4px; }
+    button { background: #0070f3; cursor: pointer; border: none; font-weight: bold; }
+    button:hover { background: #0051a8; }
+    .card { background: #1e1e1e; padding: 15px; margin-bottom: 15px; border-radius: 6px; border: 1px solid #333; }
+    pre { background: #000; padding: 12px; overflow-x: auto; color: #00ff66; border-radius: 4px; }
+    .copy-btn { background: #333; width: auto; display: inline-block; padding: 5px 10px; font-size: 12px; }
+  </style>
+</head>
+<body>
+  <h1>ScriptHub 🚀</h1>
+
+  <!-- Auth Bereich -->
+  <div id="auth-section" class="card">
+    <h3>Anmelden oder Registrieren</h3>
+    <input type="text" id="username" placeholder="Benutzername">
+    <input type="password" id="password" placeholder="Passwort">
+    <button onclick="register()">Registrieren</button>
+    <button onclick="login()">Einloggen</button>
+  </div>
+
+  <!-- Upload Bereich -->
+  <div id="upload-section" class="card" style="display:none;">
+    <h3>Neues Luau-Skript hochladen</h3>
+    <input type="text" id="title" placeholder="Skript-Titel (z. B. Fly Script)">
+    <textarea id="code" rows="5" placeholder="print('Hello World')"></textarea>
+    <button onclick="uploadScript()">Skript veröffentlichen</button>
+  </div>
+
+  <hr style="border-color: #333; margin: 20px 0;">
+  
+  <h2>Verfügbare Skripte</h2>
+  <div id="scripts">Lade Skripte...</div>
+
+  <script>
+    // DEINE RENDER-URL HIER EINTRAGEN:
+    const API_URL = "https://scripthub-api.onrender.com"; 
+    let currentUser = null;
+
+    async function register() {
+      const u = document.getElementById('username').value;
+      const p = document.getElementById('password').value;
+      const res = await fetch(`${API_URL}/api/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: u, password: p })
+      });
+      const data = await res.json();
+      alert(data.message || data.error);
+    }
+
+    async function login() {
+      const u = document.getElementById('username').value;
+      const p = document.getElementById('password').value;
+      const res = await fetch(`${API_URL}/api/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: u, password: p })
+      });
+      const data = await res.json();
+      if (data.token) {
+        currentUser = data.username;
+        document.getElementById('auth-section').style.display = 'none';
+        document.getElementById('upload-section').style.display = 'block';
+        alert("Eingeloggt als " + currentUser);
+      } else {
+        alert(data.error);
+      }
+    }
+
+    async function uploadScript() {
+      const title = document.getElementById('title').value;
+      const code = document.getElementById('code').value;
+      const res = await fetch(`${API_URL}/api/scripts`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ title, code, author: currentUser })
+      });
+      const data = await res.json();
+      alert(data.message || data.error);
+      document.getElementById('title').value = '';
+      document.getElementById('code').value = '';
+      loadScripts();
+    }
+
+    async function loadScripts() {
+      try {
+        const res = await fetch(`${API_URL}/api/scripts`);
+        const scripts = await res.json();
+        const container = document.getElementById('scripts');
+        container.innerHTML = '';
+        
+        if(scripts.length === 0) {
+          container.innerHTML = '<p>Noch keine Skripte vorhanden.</p>';
+          return;
+        }
+
+        scripts.forEach(s => {
+          container.innerHTML += `
+            <div class="card">
+              <h3>${s.title} <small style="font-size: 12px; color: #888;">von ${s.author}</small></h3>
+              <pre><code id="code-${s.id}">${escapeHtml(s.code)}</code></pre>
+              <button class="copy-btn" onclick="copyCode('code-${s.id}')">Code kopieren</button>
+            </div>
+          `;
+        });
+      } catch(e) {
+        document.getElementById('scripts').innerText = "Fehler beim Laden der Skripte.";
+      }
+    }
+
+    function copyCode(elementId) {
+      const codeText = document.getElementById(elementId).innerText;
+      navigator.clipboard.writeText(codeText);
+      alert("Skript in Zwischenablage kopiert!");
+    }
+
+    function escapeHtml(text) {
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    // Beim Laden der Seite Skripte abrufen
+    loadScripts();
+  </script>
+</body>
+</html>
