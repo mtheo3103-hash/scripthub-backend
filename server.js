@@ -3,14 +3,30 @@ const cors = require('cors');
 const Database = require('better-sqlite3');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const session = require('express-session');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const GitHubStrategy = require('passport-github2').Strategy;
 
 const app = express();
+
+// Middlewares
 app.use(express.json());
 app.use(cors());
 
-const SECRET_KEY = "mein_geheimes_passwort_key";
+// Session Middleware für Passport
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'scripthub_geheimes_session_passwort',
+  resave: false,
+  saveUninitialized: false
+}));
 
-// Datenbank initialisieren
+app.use(passport.initialize());
+app.use(passport.session());
+
+const SECRET_KEY = process.env.JWT_SECRET || "mein_geheimes_passwort_key";
+
+// Datenbank initialisieren (Persistent in /tmp für Render)
 let db;
 try {
   db = new Database('/tmp/database.sqlite');
@@ -23,7 +39,63 @@ try {
   console.error("Fehler bei der Datenbank-Initialisierung:", err);
 }
 
-// 1. Registrierung
+// Passport Serialisierung
+passport.serializeUser((user, done) => done(null, user));
+passport.deserializeUser((obj, done) => done(null, obj));
+
+// --- OAuth Strategien ---
+
+// 1. Google OAuth
+if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+  passport.use(new GoogleStrategy({
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: "https://scripthub-api.onrender.com/api/auth/google/callback"
+    },
+    (accessToken, refreshToken, profile, done) => {
+      const username = profile.displayName ? profile.displayName.replace(/\s+/g, '') : `GoogleUser_${profile.id}`;
+      return done(null, { username, provider: 'google' });
+    }
+  ));
+}
+
+// 2. GitHub OAuth
+if (process.env.GITHUB_CLIENT_ID && process.env.GITHUB_CLIENT_SECRET) {
+  passport.use(new GitHubStrategy({
+      clientID: process.env.GITHUB_CLIENT_ID,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET,
+      callbackURL: "https://scripthub-api.onrender.com/api/auth/github/callback"
+    },
+    (accessToken, refreshToken, profile, done) => {
+      const username = profile.username || `GitHubUser_${profile.id}`;
+      return done(null, { username, provider: 'github' });
+    }
+  ));
+}
+
+// --- OAuth Routen ---
+
+// Google
+app.get('/api/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+app.get('/api/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/' }),
+  (req, res) => {
+    res.redirect(`https://mtheo3103-hash.github.io/scripthub-frontend/?user=${req.user.username}`);
+  }
+);
+
+// GitHub
+app.get('/api/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
+app.get('/api/auth/github/callback', 
+  passport.authenticate('github', { failureRedirect: '/' }),
+  (req, res) => {
+    res.redirect(`https://mtheo3103-hash.github.io/scripthub-frontend/?user=${req.user.username}`);
+  }
+);
+
+// --- Reguläre API Routen ---
+
+// Registrierung
 app.post('/api/register', async (req, res) => {
   const { username, password } = req.body;
   if (!username || !password) {
@@ -40,7 +112,7 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
-// 2. Login
+// Login
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
   const stmt = db.prepare('SELECT * FROM users WHERE username = ?');
@@ -54,7 +126,7 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-// 3. Skript hochladen
+// Skript hochladen
 app.post('/api/scripts', (req, res) => {
   const { title, code, author } = req.body;
   if (!title || !code) {
@@ -65,14 +137,14 @@ app.post('/api/scripts', (req, res) => {
   res.json({ message: "Skript erfolgreich hochgeladen!" });
 });
 
-// 4. Alle Skripte abrufen
+// Alle Skripte abrufen
 app.get('/api/scripts', (req, res) => {
   const stmt = db.prepare('SELECT * FROM scripts ORDER BY id DESC');
   const scripts = stmt.all();
   res.json(scripts);
 });
 
-// Port-Dynamik für Render
+// Server starten
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Backend läuft erfolgreich auf Port ${PORT}`);
